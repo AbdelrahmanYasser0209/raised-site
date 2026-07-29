@@ -5,8 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RAISED. — AIESEC Egypt B2B Commission Ranking</title>
     <script type="module" crossorigin src="/index-BqVDNcZn.js"></script>
+
+    <style>
+      /*
+        Walking-man background layer.
+        Three tiled layers of the same image at different scales,
+        speeds and opacities create a subtle "crowd walking" parallax.
+        Pure CSS + background-repeat => scales to any screen size
+        automatically, no JS resize logic needed.
+      */
+      html, body {
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      #bg-walkers {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        background-color: #ffffff; /* swap for your brand bg color if not white */
+      }
+
+      #bg-walkers .layer {
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        width: 120%;
+        height: 120%;
+        background-image: url("/assets/walking-man.png");
+        background-repeat: repeat;
+        will-change: background-position;
+      }
+
+      /* Back layer: small, faint, slow */
+      #bg-walkers .layer--back {
+        background-size: 60px 60px;
+        opacity: 0.04;
+        animation: walk-right 90s linear infinite;
+      }
+
+      /* Mid layer: medium, a bit more visible, medium speed */
+      #bg-walkers .layer--mid {
+        background-size: 100px 100px;
+        opacity: 0.06;
+        animation: walk-left 70s linear infinite;
+      }
+
+      /* Front layer: larger, faintest but closest, fastest */
+      #bg-walkers .layer--front {
+        background-size: 150px 150px;
+        opacity: 0.05;
+        animation: walk-right 50s linear infinite;
+      }
+
+      @keyframes walk-right {
+        from { background-position: 0 0; }
+        to   { background-position: 2000px 0; }
+      }
+
+      @keyframes walk-left {
+        from { background-position: 0 0; }
+        to   { background-position: -2000px 0; }
+      }
+
+      /* Denser / larger figures on bigger screens, smaller & sparser on mobile
+         so it doesn't get too busy on small viewports */
+      @media (max-width: 768px) {
+        #bg-walkers .layer--back  { background-size: 40px 40px; opacity: 0.035; }
+        #bg-walkers .layer--mid   { background-size: 70px 70px; opacity: 0.05; }
+        #bg-walkers .layer--front { background-size: 100px 100px; opacity: 0.045; }
+      }
+
+      @media (min-width: 1600px) {
+        #bg-walkers .layer--back  { background-size: 80px 80px; }
+        #bg-walkers .layer--mid   { background-size: 130px 130px; }
+        #bg-walkers .layer--front { background-size: 190px 190px; }
+      }
+
+      /* Respect users who've asked for reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        #bg-walkers .layer {
+          animation: none !important;
+        }
+      }
+
+      #root {
+        position: relative;
+        z-index: 1;
+      }
+    </style>
   </head>
   <body style="margin:0;">
+    <div id="bg-walkers">
+      <div class="layer layer--back"></div>
+      <div class="layer layer--mid"></div>
+      <div class="layer layer--front"></div>
+    </div>
     <div id="root"></div>
   </body>
 </html>
