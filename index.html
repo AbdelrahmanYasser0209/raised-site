@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAISED. — AIESEC Egypt B2B Commission Ranking</title>
+    <script type="module" crossorigin src="./index-BKXO_6Xu.js"></script>
+    <style>
+      #boot-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background: #0E1013;
+        transition: opacity .45s ease, visibility .45s ease;
+      }
+      #boot-loader.boot-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #boot-loader .boot-spinner {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 3px solid rgba(255,255,255,0.12);
+        border-top-color: #037EF3;
+        animation: boot-spin .8s linear infinite;
+      }
+      #boot-loader .boot-label {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 13px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: #9AA0A6;
+      }
+      #boot-loader .boot-label b {
+        color: #fff;
+        font-weight: 700;
+      }
+      @keyframes boot-spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body style="margin:0;">
+    <div id="root"></div>
+    <div id="boot-loader">
+      <div class="boot-spinner"></div>
+      <div class="boot-label"><b>RAISED.</b> — loading live data…</div>
+    </div>
+    <script>
+      (function () {
+        var loader = document.getElementById('boot-loader');
+        var done = false;
+
+        function hideLoader() {
+          if (done || !loader) return;
+          done = true;
+          loader.classList.add('boot-hidden');
+          setTimeout(function () {
+            if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+          }, 500);
+          observer.disconnect();
+        }
+
+        // The app renders a status badge with one of these labels once it
+        // has resolved its data source (live / demo / or a fetch error).
+        // Watching for any of them is how we know the app is no longer
+        // in its initial "Syncing…" state.
+        var resolvedMarkers = ['Live data', 'Demo data', 'Backend unreachable'];
+
+        function checkResolved() {
+          var text = document.body.innerText || '';
+          for (var i = 0; i < resolvedMarkers.length; i++) {
+            if (text.indexOf(resolvedMarkers[i]) !== -1) {
+              hideLoader();
+              return;
+            }
+          }
+        }
+
+        var observer = new MutationObserver(checkResolved);
+        observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+        // Safety net: never block the UI forever if something unexpected
+        // happens (e.g. markers change in a future build).
+        setTimeout(hideLoader, 12000);
+      })();
+    </script>
+    <script>
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.cr-podium-card')) {
+          document.querySelectorAll('.cr-podium-card.cr-podium-open').forEach(function (el) {
+            el.classList.remove('cr-podium-open');
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
